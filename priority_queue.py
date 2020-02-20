@@ -21,10 +21,10 @@ class Heapq(object):
     def __repr__(self):
         return str(self.heap)
 
-    def left(self, i):
+    def left_child_index(self, i):
         return i * 2 + 1
 
-    def right(self, i):
+    def right_child_index(self, i):
         return i * 2 + 2
 
     def heappush(self, arg):
@@ -39,12 +39,36 @@ class Heapq(object):
     def is_empty(self) -> bool:
         return self.size == 0
 
+    def heap_size(self) -> int:
+        return self.size
+
     def heapify(self, i):
-        pass
+        parent = i
+
+        while True:
+            left_child = self.left_child_index(parent)
+            right_child = self.right_child_index(parent)
+            candidate = i
+
+            if left_child < self.size and self.heap[left_child] > self.heap[candidate]:
+                candidate = left_child
+
+            if right_child < self.size and self.heap[right_child] > self.heap[candidate]:
+                candidate = left_child
+
+            if candidate == parent:
+                print("break", i)
+                break
+
+            # swap
+            self.heap[candidate], self.heap[parent] = \
+                self.heap[parent], self.heap[candidate]
+
+            parent = candidate
 
     def build_heap(self):
         for i in range(len(self.heap) // 2, -1, -1):
-            print(i)
+            # print(i)
             self.heapify(i)
 
 
@@ -65,6 +89,8 @@ class PriorityQueue(object):
                     raise(SequenceTypeError())
         except SequenceTypeError as e:
             raise(e)
+
+        self.heap.build_heap()
 
     def __repr__(self):
         return str(self.heap)
@@ -95,13 +121,13 @@ class Person(object):
         return '(' + str(self.name) + '; ' + str(self.age) + ')'
 
 
-# lst = {1, 2, 3, 3}
+lst = [1,2,3,4,-1,0,100]
 # lst = {1: 1, 2: 2, 3: 3}
-lst = [Person(), Person("Max", 11)]
+# lst = [Person(), Person("Max", 11)]
 q = PriorityQueue(lst)
-q.push(Person("test", 122))
-a = q.pop()
-print(q, a)
+# q.push(500)
+# a = q.pop()
+print(q)
 
 
 

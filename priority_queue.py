@@ -39,8 +39,11 @@ class Heapq(object):
     def is_empty(self) -> bool:
         return self.size == 0
 
-    def heap_size(self) -> int:
+    def get_size(self) -> int:
         return self.size
+
+    def swap_by_index(self, a, b):
+        self.heap[a], self.heap[b] = self.heap[b], self.heap[a]
 
     def heapify(self, i):
         parent = i
@@ -48,21 +51,19 @@ class Heapq(object):
         while True:
             left_child = self.left_child_index(parent)
             right_child = self.right_child_index(parent)
-            candidate = i
+            candidate = parent
 
             if left_child < self.size and self.heap[left_child] > self.heap[candidate]:
                 candidate = left_child
 
             if right_child < self.size and self.heap[right_child] > self.heap[candidate]:
-                candidate = left_child
+                candidate = right_child
 
             if candidate == parent:
-                print("break", i)
                 break
 
             # swap
-            self.heap[candidate], self.heap[parent] = \
-                self.heap[parent], self.heap[candidate]
+            self.swap_by_index(candidate, parent)
 
             parent = candidate
 
@@ -121,13 +122,13 @@ class Person(object):
         return '(' + str(self.name) + '; ' + str(self.age) + ')'
 
 
-lst = [1,2,3,4,-1,0,100]
+lst = [1,2,3,4,0,100]
 # lst = {1: 1, 2: 2, 3: 3}
 # lst = [Person(), Person("Max", 11)]
 q = PriorityQueue(lst)
 # q.push(500)
-# a = q.pop()
-print(q)
+a = q.pop()
+print(q, a)
 
 
 

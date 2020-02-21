@@ -102,6 +102,9 @@ class Heapq(object):
 
 class PriorityQueue(object):
     def __init__(self, sequence, *args, key=min, seq_type=None):
+
+        if key not in (min, max):
+            raise()
         sequence = list(sequence)
         sequence.extend(args)
 

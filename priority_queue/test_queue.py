@@ -33,3 +33,7 @@ q_person = q.PriorityQueue(lst, key=min)
 q_person.push(Person("pushing", 40))
 popped = q_person.pop()
 print(q_person, 'and', popped)
+
+print('_' * 25, '\n')
+
+q.christmas_tree(6)

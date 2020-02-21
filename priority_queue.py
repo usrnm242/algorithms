@@ -12,11 +12,10 @@ class SequenceTypeError(TypeError):
 
 
 class Heapq(object):
-    """docstring for Heap"""
-
-    def __init__(self):
+    def __init__(self, comparsion_type):
         self.heap = []
         self.size = 0
+        self.compare = comparsion_type
 
     def __repr__(self):
         return str(self.heap)
@@ -27,14 +26,34 @@ class Heapq(object):
     def right_child_index(self, i):
         return i * 2 + 2
 
+    def parent_index(self, i):
+        return (i - 1) // 2
+
+    def sift_up(self, i):
+        child = i
+        parent = self.parent_index(i)
+
+        while child > 0 and self.compare(self.heap[child], self.heap[parent]) == self.heap[child]:
+            self.swap_by_index(child, parent)
+            child = parent
+            parent = self.parent_index(child)
+
     def heappush(self, arg):
-        self.heap.append(arg)
         self.size += 1
+        self.heap.append(arg)
+        self.sift_up(self.size - 1)
         return self.size
 
     def heappop(self):
-        self.size -= 1
-        return self.heap.pop()
+        if self.size < 1:
+            raise(IndexError)
+        else:
+            max_element = self.heap[0]
+            self.heap[0] = self.heap[-1]
+            self.heap.pop()
+            self.size -= 1
+            self.heapify(0)
+            return max_element
 
     def is_empty(self) -> bool:
         return self.size == 0
@@ -47,17 +66,28 @@ class Heapq(object):
 
     def heapify(self, i):
         parent = i
+        heap = self.heap
+        compare = self.compare
 
         while True:
             left_child = self.left_child_index(parent)
             right_child = self.right_child_index(parent)
             candidate = parent
 
-            if left_child < self.size and self.heap[left_child] > self.heap[candidate]:
-                candidate = left_child
+            try:
 
-            if right_child < self.size and self.heap[right_child] > self.heap[candidate]:
-                candidate = right_child
+                if left_child < self.size and \
+                        compare(heap[left_child], heap[candidate]) == heap[left_child]:
+
+                    candidate = left_child
+
+                if right_child < self.size and \
+                        compare(heap[right_child], heap[candidate]) == heap[right_child]:
+
+                    candidate = right_child
+
+            except Exception as e:
+                raise(e)
 
             if candidate == parent:
                 break
@@ -69,17 +99,15 @@ class Heapq(object):
 
     def build_heap(self):
         for i in range(len(self.heap) // 2, -1, -1):
-            # print(i)
             self.heapify(i)
 
 
 class PriorityQueue(object):
-
-    def __init__(self, sequence, *args):
+    def __init__(self, sequence, *args, key=min):
         sequence = list(sequence)
         sequence.extend(args)
 
-        self.heap = Heapq()
+        self.heap = Heapq(key)
         self.T = type(sequence[0])
 
         try:
@@ -98,8 +126,13 @@ class PriorityQueue(object):
 
     # here
     def push(self, element):
-        if isinstance(element, self.T) and hasattr(element, "__lt__"):
-            return self.heap.heappush(element)
+        try:
+            if isinstance(element, self.T) and hasattr(element, "__lt__"):
+                return self.heap.heappush(element)
+            else:
+                raise(SequenceTypeError)
+        except SequenceTypeError as e:
+            raise(e)
 
     # here
     def pop(self):
@@ -122,13 +155,14 @@ class Person(object):
         return '(' + str(self.name) + '; ' + str(self.age) + ')'
 
 
-lst = [1,2,3,4,0,100]
-# lst = {1: 1, 2: 2, 3: 3}
-# lst = [Person(), Person("Max", 11)]
-q = PriorityQueue(lst)
-# q.push(500)
-a = q.pop()
-print(q, a)
+lst = [1, 2, 3, 4, 0, 100]
+# lst = [Person("", 1), Person("", 2), Person("", 3), Person("", 4), Person("", 0), Person("", 100)]
+
+q = PriorityQueue(lst, key=max)
+
+q.push(5)
+# a = q.pop()
+print(q)
 
 
 

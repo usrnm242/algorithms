@@ -7,19 +7,25 @@ class SequenceTypeError(TypeError):
 
 class Comparator(object):
 
-    def __init__(self, arg1, arg2):
+    def __init__(self, arg1, arg2, comparsion_op):
         self.arg1 = arg1
         self.arg2 = arg2
+        self.comparsion_op = comparsion_op
 
     def compare(self, func):
-        return func(self.arg1) < func(self.arg2)
+        try:
+            return self.comparsion_op(func(self.arg1), func(self.arg2)) == func(self.arg1)
+        except Exception as e:
+            raise(e)
 
 
 class Map(object):
 
-    def __init__(self, sequence=[], comparator=min, key_T=None, val_T=None):
+    def __init__(self, sequence=[], comparsion_op=min, key_T=None, val_T=None):
         self.keys = []
         self.values = []
+        self.comparsion_op = comparsion_op  # add check min max
+        self.comparator = lambda x, y: Comparator(x, y, self.comparsion_op)
 
         if key_T is not None and val_T is not None:
             self.key_T = key_T

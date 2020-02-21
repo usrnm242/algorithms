@@ -56,9 +56,6 @@ class Heapq(object):
             self.heapify(0)
             return max_element
 
-    def is_empty(self) -> bool:
-        return self.size == 0
-
     def get_size(self) -> int:
         return self.size
 
@@ -104,12 +101,18 @@ class Heapq(object):
 
 
 class PriorityQueue(object):
-    def __init__(self, sequence, *args, key=min):
+    def __init__(self, sequence, *args, key=min, seq_type=None):
         sequence = list(sequence)
         sequence.extend(args)
 
+        if len(sequence) == 0 and seq_type is not None:
+            self.T = seq_type
+        elif len(sequence) == 0 and seq_type is None:
+            raise(IndexError)
+        else:
+            self.T = type(sequence[0])
+
         self.heap = Heapq(key)
-        self.T = type(sequence[0])
 
         try:
             for element in sequence:
@@ -124,6 +127,18 @@ class PriorityQueue(object):
 
     def __repr__(self):
         return str(self.heap)
+
+    def is_empty(self) -> bool:
+        return self.heap.size == 0
+
+    def heap_size(self) -> int:
+        return self.heap.size
+
+    def peek(self):
+        if not self.is_empty():
+            return self.heap.heap[0]
+        else:
+            raise(IndexError)
 
     # here
     def push(self, element):

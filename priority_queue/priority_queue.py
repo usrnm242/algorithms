@@ -105,6 +105,7 @@ class PriorityQueue(object):
 
         if key not in (min, max):
             raise()
+
         sequence = list(sequence)
         sequence.extend(args)
 
@@ -143,7 +144,6 @@ class PriorityQueue(object):
         else:
             raise(IndexError)
 
-    # here
     def push(self, element):
         try:
             if isinstance(element, self.T) and hasattr(element, "__lt__"):
@@ -153,6 +153,5 @@ class PriorityQueue(object):
         except SequenceTypeError as e:
             raise(e)
 
-    # here
     def pop(self):
         return self.heap.heappop()

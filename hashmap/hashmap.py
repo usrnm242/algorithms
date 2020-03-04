@@ -39,7 +39,7 @@ class HashMap(object):
         sequence = sequence or []
 
         self.number_of_elements = len(sequence)
-        self.number_of_lists = 2 * self.number_of_elements + 1  # todo
+        self.number_of_lists = 2 * self.number_of_elements + 5
         self.elements = [list() for _ in range(self.number_of_lists)]
         self.hash = hash_func
         self.load_factor = float(load_factor)
@@ -151,7 +151,7 @@ class HashMap(object):
         if self._is_valid_type(key, new_value):
             index = self._get_index_of(key)
 
-            item_to_change = KeyValue(key, new_value)
+            item_to_change = KeyValue(key)
 
             for item in self.elements[index]:
                 if item_to_change == item:
@@ -159,7 +159,7 @@ class HashMap(object):
                     return
 
             # if there is no key like that then append new item
-            self.elements[index].append(item_to_change)
+            self.elements[index].append(KeyValue(key, new_value))
             self.number_of_elements += 1
 
             if not self._load_factor_is_correct():
@@ -193,9 +193,10 @@ def main():
 
     for i in a:
         print(i)
+
     print('_' * 40)
 
-    a.change_load_factor(0.35)
+    a.change_load_factor(0.75)
     # a._init_rehashing(1)
 
     print("after changing")
@@ -205,8 +206,10 @@ def main():
     print('_' * 40)
 
     a['4'] = 145
+    a['4'] = 145
+    a['4'] = 144
 
-    del a['4']
+    # del a['4']
 
     for i in a:
         print(i)

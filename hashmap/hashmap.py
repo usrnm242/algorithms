@@ -78,14 +78,14 @@ class HashMap(object):
         else:
             return False
 
-    def current_load_factor(self) -> float:
-        return float(self.number_of_elements / self.number_of_lists)
-
     def change_load_factor(self, load_factor):
         self.load_factor = float(load_factor)
 
         if not self._load_factor_is_correct():
             self._init_rehashing(2 * self.number_of_lists + 1)
+
+    def current_load_factor(self) -> float:
+        return float(self.number_of_elements / self.number_of_lists)
 
     def _load_factor_is_correct(self) -> bool:
         if self.current_load_factor() < self.load_factor:
@@ -94,7 +94,12 @@ class HashMap(object):
             return False
 
     def _init_rehashing(self, new_number_of_lists):
-        # todo check to minimize number_of_lists
+        # checking if we want to minimize number_of_lists:
+        if self.number_of_elements / new_number_of_lists > self.load_factor:
+
+            new_number_of_lists = \
+                int(self.number_of_elements / self.load_factor)
+
         self.number_of_lists = new_number_of_lists
 
         new_elements = [list() for _ in range(self.number_of_lists)]
@@ -113,7 +118,12 @@ class HashMap(object):
     def append(self, key, value):
         index = self._get_index_of(key)
 
-        self.elements[index].append(KeyValue(key, value))
+        item_to_append = KeyValue(key, value)
+
+        if item_to_append in self.elements[index]:
+            return
+
+        self.elements[index].append(item_to_append)
         self.number_of_elements += 1
 
         if not self._load_factor_is_correct():
@@ -123,29 +133,83 @@ class HashMap(object):
         for i in self.elements:
             yield i
 
+    def __getitem__(self, key):  # get value by key
+        if self._is_valid_type(key):
+            index = self._get_index_of(key)
+            item_to_search = KeyValue(key)
+
+            for item in self.elements[index]:
+                if item_to_search == item:
+                    return item.value
+
+            return None
+
+        else:
+            raise(SequenceTypeError)
+
+    def __setitem__(self, key, new_value):  # set value by key
+        if self._is_valid_type(key, new_value):
+            index = self._get_index_of(key)
+
+            item_to_change = KeyValue(key, new_value)
+
+            for item in self.elements[index]:
+                if item_to_change == item:
+                    item.value = new_value
+                    return
+
+            # if there is no key like that then append new item
+            self.elements[index].append(item_to_change)
+            self.number_of_elements += 1
+
+            if not self._load_factor_is_correct():
+                self._init_rehashing(2 * self.number_of_lists + 1)
+
+            return
+
+        else:
+            raise(SequenceTypeError)
+
+    def __missing__(self, key):
+        return None
+
+    def __delitem__(self, key):
+        if self._is_valid_type(key):
+            index = self._get_index_of(key)
+
+            item_to_delete = KeyValue(key)
+
+            for inner_index, item in enumerate(self.elements[index]):
+                if item_to_delete == item:
+                    del self.elements[index][inner_index]
+                    return
+
+        else:
+            raise(SequenceTypeError)
+
 
 def main():
     a = HashMap([('1', 0), ('2', 0), ('3', 0)])
 
     for i in a:
         print(i)
-    print('_' * 40, '\n')
+    print('_' * 40)
 
-    a.append('4', 5)
-    a.append('4', 5)
-    a.append('4', 5)
-    a.append('4', 5)
-    a.append('7', 5)
+    a.change_load_factor(0.35)
+    # a._init_rehashing(1)
+
+    print("after changing")
 
     for i in a:
         print(i)
     print('_' * 40)
 
-    a.change_load_factor(0.15)
+    a['4'] = 145
+
+    del a['4']
 
     for i in a:
         print(i)
-    print('_' * 40)
 
 
 if __name__ == '__main__':

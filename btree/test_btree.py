@@ -13,7 +13,7 @@ def main():
 
     mmap = btree_map.Map(sequence, t=5)
 
-    print("map is", mmap, "\ninserting new value: ", end='')
+    print("map is", mmap, "with t = 5\ninserting new value: ", end='')
 
     mmap[10] = "TEST"  # inserting new value
 
@@ -27,7 +27,7 @@ def main():
 
     print()
 
-    print("Iteraring:")
+    print("Iterating:")
 
     for i in mmap:
         print(i)
@@ -36,7 +36,7 @@ def main():
 
     print("is map empty:", mmap.is_empty())
 
-    empty_map = btree_map.Map(key_T='str', val_T='int')
+    empty_map = btree_map.Map(key_T=str, val_T=int)
 
     print("init new empty map. Is new map empty:", empty_map.is_empty())
 
@@ -48,7 +48,12 @@ def main():
     if (2, "string[2]") in mmap:
         print("map contains pair 2, 'string[2]'")
     else:
-        print("map doesn't contains pair 2, 'string[2]'")
+        print("map doesn't contain pair 2, 'string[2]'")
+
+    if -1 in mmap:
+        print("map contains key '-1'")
+    else:
+        print("map doensn't contain key '-1'")
 
 
 if __name__ == '__main__':

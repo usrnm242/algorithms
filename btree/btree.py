@@ -1,22 +1,3 @@
-"""
-B-tree is used to disk operations. Each node (except root) contains
-at least t-1 keys (t children) and at most 2*t - 1 keys (2*t children)
-where t is the degree of b-tree. It is not a kind of typical bst tree, because
-this tree grows up.
-B-tree is balanced which means that the difference between height of left subtree and right subtree is at most 1.
-
-Complexity
-    n - number of elements
-    t - degree of tree
-    Tree always has height at most logt (n+1)/2
-    Algorithm        Average        Worst case
-    Space            O(n)           O(n)
-    Search           O(log n)       O(log n)
-    Insert           O(log n)       O(log n)
-    Delete           O(log n)       O(log n)
-"""
-
-
 class Node:
     def __init__(self):
         # self.is_leaf = is_leaf

@@ -1,5 +1,5 @@
 from functools import total_ordering
-from btree import BTree, Node
+from btree import BTree
 
 
 class SequenceTypeError(TypeError):
@@ -33,6 +33,34 @@ class KeyValueBTree(BTree):
 
     def __init__(self, t):
         super().__init__(t)
+
+    def __contains__(self, key) -> bool:
+        current_node = self.root
+
+        if key.value is not None:
+            while True:
+                i = len(current_node.keys) - 1
+                while i >= 0 and current_node.keys[i] > key:
+                    i -= 1
+
+                if i >= 0 and current_node.keys[i] == key:
+                    return True
+                elif current_node.is_leaf:
+                    return False
+                else:
+                    current_node = current_node.children[i + 1]
+        else:
+            while True:
+                i = len(current_node.keys) - 1
+                while i >= 0 and current_node.keys[i].key > key.key:
+                    i -= 1
+
+                if i >= 0 and current_node.keys[i].key == key.key:
+                    return True
+                elif current_node.is_leaf:
+                    return False
+                else:
+                    current_node = current_node.children[i + 1]
 
     def get_by_key(self, key):
         current_node = self.root
@@ -190,7 +218,7 @@ class Map(object):
     def __contains__(self, value):
         if not isinstance(value, KeyValue):
             try:
-                value = KeyValue(value[0], value[1])
+                value = KeyValue(value[0], value[1]) if isinstance(value, tuple) else KeyValue(value)
             except TypeError:
                 raise(SequenceTypeError)
         return value in self.tree

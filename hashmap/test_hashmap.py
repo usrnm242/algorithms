@@ -29,9 +29,9 @@ del hm['4']  # deleting
 
 print("\ncurrent load factor is", hm.current_load_factor())
 
-print("changing load factor")
+print("changing load factor; \ncalling func with setting load factor = 0.72")
 
-hm.change_load_factor(0.75)  # we can use any value
+hm.change_load_factor(0.72)  # we can use any value
 
 print("current load factor is", hm.current_load_factor())
 

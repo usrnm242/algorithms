@@ -81,7 +81,7 @@ class HashMap(object):
     def change_load_factor(self, load_factor):
         self.load_factor = float(load_factor)
 
-        if not self._load_factor_is_correct():
+        while not self._load_factor_is_correct():
             self._init_rehashing(2 * self.number_of_lists + 1)
 
     def current_load_factor(self) -> float:
@@ -186,34 +186,3 @@ class HashMap(object):
 
         else:
             raise(SequenceTypeError)
-
-
-def main():
-    a = HashMap([('1', 0), ('2', 0), ('3', 0)])
-
-    for i in a:
-        print(i)
-
-    print('_' * 40)
-
-    a.change_load_factor(0.75)
-    # a._init_rehashing(1)
-
-    print("after changing")
-
-    for i in a:
-        print(i)
-    print('_' * 40)
-
-    a['4'] = 145
-    a['4'] = 145
-    a['4'] = 144
-
-    # del a['4']
-
-    for i in a:
-        print(i)
-
-
-if __name__ == '__main__':
-    main()

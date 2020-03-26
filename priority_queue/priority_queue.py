@@ -1,5 +1,4 @@
 def christmas_tree(height):
-    # mood :)
     for i in range(height, 0, -1):
         print(' ' * (i - 1), '*' * (2 * (height - i) + 1), sep='')
 
@@ -90,7 +89,6 @@ class Heapq(object):
             if candidate == parent:
                 break
 
-            # swap
             self.swap_by_index(candidate, parent)
 
             parent = candidate
@@ -101,10 +99,10 @@ class Heapq(object):
 
 
 class PriorityQueue(object):
-    def __init__(self, sequence, *args, key=min, seq_type=None):
 
+    def __init__(self, sequence, *args, key=min, seq_type=None):
         if key not in (min, max):
-            raise()
+            raise(Exception)
 
         sequence = list(sequence)
         sequence.extend(args)

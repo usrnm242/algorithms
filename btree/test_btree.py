@@ -9,12 +9,11 @@ def main():
 
     sequence = [(i, f"string[{i}]") for i in rand_lst]
 
-    print("sequence is", sequence, end='\n\n')
+    print("start sequence is", sequence, end='\n\n')
 
     mmap = btree_map.Map(sequence, t=5)
 
-    print("map is", mmap, "with t = 5\ninserting new value: ", end='')
-
+    print("map is", mmap, "with t = 5\ninserting val (10: TEST): ", end='')
     mmap[10] = "TEST"  # inserting new value
 
     print(mmap, "\nchanging value by key=10: ", end='')
@@ -24,6 +23,8 @@ def main():
     del mmap[10]
 
     print(mmap)
+
+    print("getting value by key = -1:", mmap[-1])
 
     print()
 
@@ -43,7 +44,7 @@ def main():
     if btree_map.KeyValue(1, "string[1]") in mmap:
         print("map contains pair 1, 'string[1]'")
     else:
-        print("map doesnt contains pair 1, 'string[1]'")
+        print("map doesn't contain pair 1, 'string[1]'")
 
     if (2, "string[2]") in mmap:
         print("map contains pair 2, 'string[2]'")

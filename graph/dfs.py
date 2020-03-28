@@ -15,15 +15,3 @@ def dfs(graph, start):
                 stack.append(w)
 
     return visited
-
-
-graph = {
-    "A": ["B", "C"],
-    "B": ["A", "D", "E"],
-    "C": ["A", "F"],
-    "D": ["B"],
-    "E": ["B", "F"],
-    "F": ["C", "E"],
-}
-
-print(dfs(graph, "A"))

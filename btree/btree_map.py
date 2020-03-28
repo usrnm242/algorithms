@@ -1,5 +1,7 @@
 from functools import total_ordering
 from btree import BTree
+from binary_search import bisect_right
+
 
 
 class SequenceTypeError(TypeError):
@@ -34,14 +36,12 @@ class KeyValueBTree(BTree):
     def __init__(self, t):
         super().__init__(t)
 
-    def __contains__(self, key) -> bool:
+    def __contains__(self, key):
         current_node = self.root
 
         if key.value is not None:
             while True:
-                i = len(current_node.keys) - 1
-                while i >= 0 and current_node.keys[i] > key:
-                    i -= 1
+                i = bisect_right(current_node.keys, key) - 1
 
                 if i >= 0 and current_node.keys[i] == key:
                     return True
@@ -49,11 +49,11 @@ class KeyValueBTree(BTree):
                     return False
                 else:
                     current_node = current_node.children[i + 1]
+
         else:
             while True:
-                i = len(current_node.keys) - 1
-                while i >= 0 and current_node.keys[i].key > key.key:
-                    i -= 1
+                i = bisect_right([i.key for i in current_node.keys],
+                                 key.key) - 1
 
                 if i >= 0 and current_node.keys[i].key == key.key:
                     return True
@@ -67,10 +67,7 @@ class KeyValueBTree(BTree):
         item_to_get = KeyValue(key)
 
         while True:
-            i = len(current_node.keys) - 1
-
-            while i >= 0 and item_to_get < current_node.keys[i]:
-                i -= 1
+            i = bisect_right([i.key for i in current_node.keys], key) - 1
 
             if i >= 0 and item_to_get == current_node.keys[i]:
                 return current_node.keys[i].value
@@ -81,14 +78,11 @@ class KeyValueBTree(BTree):
 
         return None
 
-    def set_by_key(self, key, new_value) -> bool:
+    def set_by_key(self, key, new_value):
         current_node = self.root
 
         while True:
-            i = len(current_node.keys) - 1
-
-            while i >= 0 and current_node.keys[i].key > key:
-                i -= 1
+            i = bisect_right([i.key for i in current_node.keys], key) - 1
 
             if i >= 0 and current_node.keys[i].key == key:
                 current_node.keys[i].value = new_value

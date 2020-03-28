@@ -1,3 +1,6 @@
+from binary_search import binary_search, bisect_left, bisect_right
+
+
 class Node:
     def __init__(self):
         # self.is_leaf = is_leaf
@@ -18,15 +21,15 @@ class BTree:
         if t < 2:
             raise(AttributeError)
 
-        self.min_numbers_of_keys = t - 1
-        self.max_number_of_keys = 2 * t - 1
+        self.min_numbers_of_keys = int(t) - 1
+        self.max_number_of_keys = 2 * int(t) - 1
 
         self.root = Node()
 
     def is_empty(self):
         return len(self.root.keys) == 0 and self.root.is_leaf
 
-    def _split_child(self, parent: Node, child_index: int):
+    def _split_child(self, parent, child_index):
         new_right_child = Node()
         half_max = self.max_number_of_keys // 2
         child = parent.children[child_index]
@@ -53,27 +56,23 @@ class BTree:
         else:
             self._insert_to_nonfull_node(self.root, key)
 
-    def _insert_to_nonfull_node(self, node: Node, key):
-        i = len(node.keys) - 1
-        while i >= 0 and node.keys[i] >= key:
-            i -= 1
+    def _insert_to_nonfull_node(self, node, key):
+        i = bisect_right(node.keys, key)
 
         if node.is_leaf:
-            node.keys.insert(i + 1, key)
+            node.keys.insert(i, key)
         else:
-            if len(node.children[i + 1].keys) >= self.max_number_of_keys:  # overflow
-                self._split_child(node, i + 1)
-                if node.keys[i + 1] < key:  # decide which child is going to have a new key
+            if len(node.children[i].keys) >= self.max_number_of_keys:  # overflow
+                self._split_child(node, i)
+                if node.keys[i] < key:  # decide which child is going to have a new key
                     i += 1
 
-            self._insert_to_nonfull_node(node.children[i + 1], key)
+            self._insert_to_nonfull_node(node.children[i], key)
 
-    def __contains__(self, key) -> bool:
+    def __contains__(self, key):
         current_node = self.root
         while True:
-            i = len(current_node.keys) - 1
-            while i >= 0 and current_node.keys[i] > key:
-                i -= 1
+            i = bisect_right(current_node.keys, key) - 1
 
             if i >= 0 and current_node.keys[i] == key:
                 return True
@@ -85,7 +84,7 @@ class BTree:
     def remove_key(self, key):
         self._remove_key(self.root, key)
 
-    def _remove_key(self, node: Node, key) -> bool:
+    def _remove_key(self, node, key) -> bool:
         try:
             key_index = node.keys.index(key)
             if node.is_leaf:
@@ -98,13 +97,10 @@ class BTree:
 
         except ValueError:  # key not found in node
             if node.is_leaf:
-                print("Key not found.")
+                # print("Key not found.")
                 return False  # key not found
             else:
-                i = 0
-                number_of_keys = len(node.keys)
-                while i < number_of_keys and key > node.keys[i]:  # decide in which subtree may be key
-                    i += 1
+                i = bisect_right(node.keys, key)
 
                 action_performed = self._repair_tree(node, i)
                 if action_performed:
@@ -248,8 +244,9 @@ class BTree:
 #     tree.insert_key(i)
 
 # tree.remove_key(8)
-# tree.traverse_tree()
 
-# if 3 in tree:
-#     print("lol")
+# print(tree)
 
+# if 7 in tree:
+#     # print("lol")
+#     pass

@@ -40,8 +40,12 @@ class HashMap(object):
 
         self.number_of_elements = len(sequence)
         self.number_of_lists = 2 * self.number_of_elements + 5
+        # if number_of_elements == 0 then start number_of_elements is 5
+
         self.elements = [list() for _ in range(self.number_of_lists)]
-        self.hash = hash_func
+        # list of lists is just a link to memory, it works fast
+
+        self.hash = hash_func  # we can use any hash func
         self.load_factor = float(load_factor)
 
         if key_T is not None and val_T is not None:
@@ -54,7 +58,7 @@ class HashMap(object):
             self.val_T = type(sequence[0][1])
 
         for key, value in sequence:
-            if self._is_valid_type(key, value) and self._has_hash(key):
+            if self._is_valid_type(key, value) and self._hashable(key):
                 index = self._get_index_of(key)
                 self.elements[index].append(KeyValue(key, value))
             else:
@@ -72,7 +76,7 @@ class HashMap(object):
 
         return True
 
-    def _has_hash(self, item) -> bool:
+    def _hashable(self, item) -> bool:
         if hasattr(item, "__hash__"):
             return True
         else:

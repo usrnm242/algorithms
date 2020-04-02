@@ -221,6 +221,25 @@ class BTree:
             for j in self._traverse_tree(node.children[-1]):
                 yield j
 
+    def __len__(self):
+        def _traverse_tree_len(node: Node):
+            counter = 0
+
+            if node.is_leaf:
+                counter += len(node.keys)
+                return counter
+
+            else:
+                for i, key in enumerate(node.keys):
+                    counter += _traverse_tree_len(node.children[i])
+                    counter += 1
+
+                counter += _traverse_tree_len(node.children[-1])
+
+                return counter
+
+        return _traverse_tree_len(self.root)
+
     def __iter__(self):
         for i in self._traverse_tree(self.root):
             yield i
@@ -237,16 +256,3 @@ class BTree:
                 ret_val += self._traverse_tree_repr(node.children[i]) + " " + str(key) + " "
 
             return ret_val + self._traverse_tree_repr(node.children[-1])
-
-
-# tree = BTree(t=3)
-# for i in range(10):
-#     tree.insert_key(i)
-
-# tree.remove_key(8)
-
-# print(tree)
-
-# if 7 in tree:
-#     # print("lol")
-#     pass

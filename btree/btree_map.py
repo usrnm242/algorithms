@@ -209,6 +209,9 @@ class Map(object):
         for i in self.tree:
             yield i
 
+    def __len__(self):
+        return len(self.tree)
+
     def __contains__(self, value):
         if not isinstance(value, KeyValue):
             try:

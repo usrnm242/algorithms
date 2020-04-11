@@ -5,8 +5,7 @@ class KruskalTree(Graph):
     def __init__(self, graph):
         """
         init arg is matrix-like or dict-like graph
-        first always call explore
-        then show_distances or get_path
+        in dict keys always indicate all vertexes
         """
 
         super(KruskalTree, self).__init__(graph, is_undirected=True)
@@ -76,6 +75,5 @@ if __name__ == '__main__':
          3: []
          }
 
-    # tree, cost = KruskalTree(graph)
     tree = KruskalTree(g).explore_tree()
     print(tree)

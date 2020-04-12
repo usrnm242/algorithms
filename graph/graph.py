@@ -1,5 +1,5 @@
 class Graph:
-    def __init__(self, graph, is_undirected=False):
+    def __init__(self, graph, is_undirected=False, store='dict'):
         """
         stores graph in dict.
         exmaple: g = {source: [(dest, weight), (dest1, weight1)]}
@@ -90,9 +90,12 @@ if __name__ == '__main__':
 
     print('_' * 40, end='\n\n')
 
-    graph2 = [[0, 0, 3],
-              [1, 0, 1],
-              [5, 1, 0]]
+    graph2 = [[0, 5, 3],
+              [5, 0, 0],
+              [3, 0, 0]]
+
+    print(res, "is res")
+
 
     print("graph2:", graph2)
 

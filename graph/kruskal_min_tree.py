@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from graph import Graph
 
 
@@ -58,22 +60,24 @@ class KruskalTree(Graph):
 
         for edge in self.edges:
             weight, vertex1, vertex2 = edge
-            print(weight, vertex1, vertex2)
             if find(vertex1) != find(vertex2):
                 union(vertex1, vertex2)
-                minimum_spanning_tree.add(edge)
+                minimum_spanning_tree.add((vertex1, vertex2))
 
-        return minimum_spanning_tree
+        return list(minimum_spanning_tree)
 
 
 if __name__ == '__main__':
 
     weight = 1
 
-    g = {1: [(2, 5), (3, 3)],
-         2: [(3, 1)],
-         3: []
-         }
-
-    tree = KruskalTree(g).explore_tree()
+    # g = {1: [(2, 5), (3, 3)],
+    #      2: [(3, 1)],
+    #      3: []
+    #      }
+    undirected_graph = {1: [(2, 5), (3, 3)],
+                        2: [(3, 1)],
+                        3: [(4, 5)],
+                        4: [(1, 2), (2, 2)]}
+    tree = KruskalTree(undirected_graph).explore_tree()
     print(tree)

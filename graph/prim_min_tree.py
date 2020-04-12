@@ -1,25 +1,11 @@
-"""Prim's Algorithm.
-
-    Determines the minimum spanning tree(MST) of a graph using the Prim's Algorithm.
-
-    Details: https://en.wikipedia.org/wiki/Prim%27s_algorithm
-"""
+#!/usr/bin/env python3
 
 import heapq as hq
 from numpy import Infinity
 
 
 class Vertex:
-    """Class Vertex."""
-
     def __init__(self, id):
-        """
-        Arguments:
-            id - input an id to identify the vertex
-        Attributes:
-            neighbors - a list of the vertices it is linked to
-            edges     - a dict to store the edges's weight
-        """
         self.id = str(id)
         self.key = None
         self.pi = None
@@ -135,17 +121,19 @@ class PrimTree(Graph):
 
 if __name__ == "__main__":
 
-    graph = {1: [(2, 5), (3, 3)],
-             2: [(3, 9)],
-             3: [(1, 1)]
-             }
+    undirected_graph = {1: [(2, 5), (3, 3)],
+                        2: [(3, 1)],
+                        3: [(4, 5)],
+                        4: [(1, 2), (2, 2)]}
 
-    t = PrimTree(graph)
+    t = PrimTree(undirected_graph)
 
     a = t.prim(0)
     print(a)
 
     print('_' * 40, end='\n\n')
+
+    t = PrimTree(undirected_graph)
 
     b = t.prim_heap(0)
     print(b)

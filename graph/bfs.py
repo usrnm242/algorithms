@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 def bfs(graph, start):
     visited = [start]
     queue = [start]
@@ -12,15 +14,14 @@ def bfs(graph, start):
     return visited
 
 
-graph = {
-    "A": ["B", "C"],
-    "B": ["A", "D", "E"],
-    "C": ["A", "F"],
-    "D": ["B"],
-    "E": ["B", "F"],
-    "F": ["C", "E"],
-}
-
-
 if __name__ == "__main__":
+    graph = {
+        "A": ["B", "C"],
+        "B": ["A", "D", "E"],
+        "C": ["A", "F"],
+        "D": ["B"],
+        "E": ["B", "F"],
+        "F": ["C", "E"],
+    }
+
     print(bfs(graph, "A"))

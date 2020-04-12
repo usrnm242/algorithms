@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 class Graph:
     def __init__(self, graph, is_undirected=False, store='dict'):
         """

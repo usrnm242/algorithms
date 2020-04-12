@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 def dfs(graph, start):
     visited = []
     stack = [start]

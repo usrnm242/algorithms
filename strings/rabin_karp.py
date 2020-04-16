@@ -5,7 +5,7 @@ alphabet_size = 256
 modulus = 1000003
 
 
-def rabin_karp(pattern: str, text: str) -> int:
+def rabin_karp(pattern: str, text: str) -> list:
     """
     Returns
         index of pattern in the text
@@ -25,6 +25,8 @@ def rabin_karp(pattern: str, text: str) -> int:
     text_hash = 0
     modulus_power = 1
 
+    matches = []
+
     # calculating hash of pattern and substring of text
     for i in range(pattern_len):
         p_hash = (ord(pattern[i]) + p_hash * alphabet_size) % modulus
@@ -35,7 +37,8 @@ def rabin_karp(pattern: str, text: str) -> int:
 
     for i in range(0, text_len - pattern_len + 1):
         if text_hash == p_hash and text[i:i + pattern_len] == pattern:
-            return i
+            matches.append(i)
+            # return i
         if i == text_len - pattern_len:
             continue
         # rolling hash
@@ -44,18 +47,18 @@ def rabin_karp(pattern: str, text: str) -> int:
             ord(text[i + pattern_len])
             ) % modulus
 
-    return -1
+    return matches
 
 
 def test_rabin_karp():
 
     pattern = "QWERTY"
-    text = "mmmmmQWERTYmmmmmm"
+    text = "QWERTYmmmmQWERTYmmmmmmQWERTY"
     print("\ntext:", text)
     print("pattern:", pattern)
     index = rabin_karp(pattern, text)
     print("index is", index)
-    print("text starting from match:", text[index:], '\n')
+    # print("text starting from match:", text[index:], '\n')
 
 if __name__ == "__main__":
     test_rabin_karp()

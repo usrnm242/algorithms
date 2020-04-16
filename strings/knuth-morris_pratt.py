@@ -1,8 +1,8 @@
-def kmp(pattern: str, text: str) -> 'tuple | -1':
+def kmp(pattern: str, text: str) -> list:
     """
     Returns
-        tuple (start_index, end_index)
-        of -1 if not found
+        list of pattern indices start in text
+        or [] if not found
     """
     pattern = str(pattern)
     text = str(text)
@@ -12,20 +12,21 @@ def kmp(pattern: str, text: str) -> 'tuple | -1':
 
     failure: list = __get_failure_array(pattern)
 
-    text_idx, pattern_idx = 0, 0  # index into text, pattern
-    while text_idx < text_len:
-        if pattern[pattern_idx] == text[text_idx]:
-            if pattern_idx == (pattern_len - 1):
-                return (text_idx + 1 - pattern_len, text_idx + 1)
+    matches_indices = []
+
+    pattern_idx = 0
+    for text_idx in range(text_len):
+        while pattern_idx and text[text_idx] != pattern[pattern_idx]:
+            pattern_idx = failure[pattern_idx - 1]
+
+        if text[text_idx] == pattern[pattern_idx]:
             pattern_idx += 1
 
-        # if it is prefix in pattern
-        # go back enough to continue
-        elif pattern_idx > 0:
-            pattern_idx = failure[pattern_idx - 1]
-            continue
-        text_idx += 1
-    return -1
+            if pattern_idx == pattern_len:
+                matches_indices.append(text_idx - pattern_len + 1)
+                pattern_idx = failure[pattern_idx - 1]
+
+    return matches_indices
 
 
 def __get_failure_array(pattern: str) -> list:
@@ -38,17 +39,21 @@ def __get_failure_array(pattern: str) -> list:
     while j < len(pattern):
         if pattern[i] == pattern[j]:
             i += 1
+
         elif i > 0:
             i = failure[i - 1]
             continue
+
         j += 1
         failure.append(i)
+
     return failure
 
 
 if __name__ == "__main__":
     # Test 1)
     pattern = "QWERTY"
-    text = "0123456QWERTYmmmmmmm"
-    start, end = kmp(pattern, text)
-    print(text[start:end])
+    text = "0123456QWERTYmmmmmmmQWERTY"
+    a = kmp(pattern, text)
+    print(a)
+    # print(text[start:end])

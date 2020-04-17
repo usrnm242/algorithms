@@ -2,7 +2,7 @@ def kmp(pattern: str, text: str) -> list:
     """
     Returns
         list of pattern indices start in text
-        or [] if not found
+        or [] if not
     """
     pattern = str(pattern)
     text = str(text)
@@ -51,7 +51,6 @@ def __get_failure_array(pattern: str) -> list:
 
 
 if __name__ == "__main__":
-    # Test 1)
     pattern = "QWERTY"
     text = "0123456QWERTYmmmmmmmQWERTY"
     a = kmp(pattern, text)

@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-
 alphabet_size = 256
 modulus = 1000003
 
@@ -8,8 +7,8 @@ modulus = 1000003
 def rabin_karp(pattern: str, text: str) -> list:
     """
     Returns
-        index of pattern in the text
-        if not found returns -1
+        list of indices of pattern in the text
+        if not found returns []
     """
 
     pattern = str(pattern)
@@ -51,7 +50,6 @@ def rabin_karp(pattern: str, text: str) -> list:
 
 
 def test_rabin_karp():
-
     pattern = "QWERTY"
     text = "QWERTYmmmmQWERTYmmmmmmQWERTY"
     print("\ntext:", text)
